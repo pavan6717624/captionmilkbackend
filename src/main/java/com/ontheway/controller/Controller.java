@@ -1,6 +1,8 @@
 package com.ontheway.controller;
 
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -13,9 +15,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ontheway.domain.City;
 import com.ontheway.jwt.JwtTokenUtil;
+import com.ontheway.model.DisplayHotels;
+import com.ontheway.model.DisplayItems;
 import com.ontheway.model.LoginStatusDTO;
 import com.ontheway.repository.RolesRepository;
+import com.ontheway.service.CustomerService;
 import com.ontheway.service.JwtUserDetailsService;
 
 
@@ -43,6 +49,29 @@ public class Controller {
 
 	@Autowired
 	private JwtUserDetailsService userDetailsService;
+	
+	@Autowired
+	private CustomerService customerService;
+	
+	@RequestMapping(value = "getCities")
+	public List<City> getCities()
+	{
+		return customerService.getCities();
+	}
+	
+	@RequestMapping(value = "getHotels")
+	public List<DisplayHotels> getHotels(@RequestParam("fromCity") String fromCity, @RequestParam("toCity") String toCity,@RequestParam("orderType") String orderType,@RequestParam("distance") String distance)
+	{
+		
+		return customerService.getHotels(fromCity,toCity,orderType,distance);
+	}
+	
+	@RequestMapping(value = "getItems")
+	public List<DisplayItems> getItems(@RequestParam("hotelId") String hotelId)
+	{
+		
+		return customerService.getItems(hotelId);
+	}
 	
  	@RequestMapping(value = "/login")
  	public LoginStatusDTO createAuthenticationToken(@RequestParam("username") String username, @RequestParam("password") String password) {
