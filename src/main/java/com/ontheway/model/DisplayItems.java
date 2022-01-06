@@ -6,6 +6,6 @@ public interface DisplayItems {
 	public String getName();
 	public Double getPrice();
 	public Integer getCookingTime();
-	public Boolean getAvailablity();
+	public Boolean getAvailability();
 
 }

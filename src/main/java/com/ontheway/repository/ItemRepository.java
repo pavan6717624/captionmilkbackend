@@ -13,7 +13,7 @@ import com.ontheway.model.DisplayItems;
 @Repository
 public interface ItemRepository extends JpaRepository<Item,Long> {
 
-	@Query("select i.id as id, i.name as name,i.price as price, i.availablity as availablity,i.cookingTime as cookingTime from Item i where i.hotel.id=(:hotelId)")
+	@Query("select i.id as id, i.name as name,i.price as price, i.availability as availability,i.cookingTime as cookingTime from Item i where i.hotel.id=(:hotelId)")
 	List<DisplayItems> getItems(@Param("hotelId") Long hotelId);
 
 }

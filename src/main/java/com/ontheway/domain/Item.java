@@ -87,11 +87,11 @@ public class Item implements Serializable{
 	}
 
 	public Boolean getAvailablity() {
-		return availablity;
+		return availability;
 	}
 
-	public void setAvailablity(Boolean availablity) {
-		this.availablity = availablity;
+	public void setAvailablity(Boolean availability) {
+		this.availability = availability;
 	}
 
 	String name;
@@ -107,6 +107,6 @@ public class Item implements Serializable{
 	
 	int cookingTime;
 	
-	Boolean availablity;
+	Boolean availability;
 
 }
