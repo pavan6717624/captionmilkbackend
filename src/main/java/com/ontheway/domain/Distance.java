@@ -52,6 +52,10 @@ public class Distance implements Serializable{
 	@OneToOne(fetch = FetchType.LAZY)
 	 @JoinColumn(name = "fromCityId")
 	City fromCity;
+	@OneToOne(fetch = FetchType.LAZY)
+	 @JoinColumn(name = "toCityId")
+	City toCity;
+	
 	
 	public City getFromCity() {
 		return fromCity;
@@ -69,9 +73,6 @@ public class Distance implements Serializable{
 		this.toCity = toCity;
 	}
 
-	@OneToOne(fetch = FetchType.LAZY)
-	 @JoinColumn(name = "toCityId")
-	City toCity;
 	
 	double distance;
 }

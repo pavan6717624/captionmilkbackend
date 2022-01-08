@@ -11,6 +11,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -20,9 +21,13 @@ import com.ontheway.jwt.JwtTokenUtil;
 import com.ontheway.model.DisplayHotels;
 import com.ontheway.model.DisplayItems;
 import com.ontheway.model.LoginStatusDTO;
+import com.ontheway.model.OrderDetails;
+import com.ontheway.model.OrderDetailsDTO;
 import com.ontheway.repository.RolesRepository;
 import com.ontheway.service.CustomerService;
+import com.ontheway.service.HotelService;
 import com.ontheway.service.JwtUserDetailsService;
+import com.ontheway.service.OrderService;
 
 
 
@@ -37,7 +42,8 @@ public class Controller {
 	@Autowired
 	RolesRepository rolesRepository;
 	
-	
+	@Autowired
+	OrderService orderService;
 	
 
 	
@@ -53,17 +59,62 @@ public class Controller {
 	@Autowired
 	private CustomerService customerService;
 	
+	@Autowired
+	private HotelService hotelService;
+	
 	@RequestMapping(value = "getCities")
 	public List<City> getCities()
 	{
 		return customerService.getCities();
 	}
 	
+	@RequestMapping(value = "getHotelDetails")
+	public DisplayHotels getHotelDetails()
+	{
+		return hotelService.getHotelDetails();
+	}
+	
+	@RequestMapping(value = "getOrderDetails")
+	public List<OrderDetailsDTO> getOrderDetails()
+	{
+		return hotelService.getOrderDetails();
+	}
+	
 	@RequestMapping(value = "getHotels")
 	public List<DisplayHotels> getHotels(@RequestParam("fromCity") String fromCity, @RequestParam("toCity") String toCity,@RequestParam("orderType") String orderType,@RequestParam("distance") String distance)
 	{
 		
-		return customerService.getHotels(fromCity,toCity,orderType,distance);
+		return hotelService.getHotels(fromCity,toCity,orderType,distance);
+	}
+	
+	@RequestMapping(value = "hotelStatus")
+	public DisplayHotels hotelStatus(@RequestParam("hotelStatus") String hotelStatus)
+	{
+		
+		return hotelService.hotelStatus(hotelStatus);
+	}
+	
+	@RequestMapping(value = "submitOrder")
+	public Boolean submitOrder(@RequestParam("orderId") String orderId, @RequestParam("rejectReason") String rejectReason, @RequestParam("orderStatus") String orderStatus)
+	{
+		
+		return orderService.submitOrder(orderId, rejectReason, orderStatus);
+	}
+	
+	@RequestMapping(value = "payment")
+	public Boolean payment(@RequestBody OrderDetails order)
+	{
+		
+		 return orderService.payment(order);
+		 
+	}
+	
+	@RequestMapping(value = "getOrderItems")
+	public List<DisplayItems> getOrderItems(@RequestParam("orderId") String orderId)
+	{
+		
+		 return orderService.getOrderItems(orderId);
+		 
 	}
 	
 	@RequestMapping(value = "getItems")

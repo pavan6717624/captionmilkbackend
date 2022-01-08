@@ -7,5 +7,6 @@ public interface DisplayItems {
 	public Double getPrice();
 	public Integer getCookingTime();
 	public Boolean getAvailability();
+	public Integer getCount();
 
 }

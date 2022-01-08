@@ -6,4 +6,5 @@ public interface DisplayHotels {
 	public String getName();
 	public String getAddress();
 	public Double getDistance() ;
+	public Boolean getOnlineStatus();
 }

@@ -5,11 +5,11 @@ import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import com.ontheway.domain.City;
+import com.ontheway.domain.OrderStatus;
 
 @Repository
-public interface CityRepository extends JpaRepository<City,Long> {
+public interface OrderStatusRepository extends JpaRepository<OrderStatus,Long> {
 
-	Optional<City> findByName(String fromCity);
+	Optional<OrderStatus> findByName(String string);
 
 }
