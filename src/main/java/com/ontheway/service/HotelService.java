@@ -3,6 +3,7 @@ package com.ontheway.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
@@ -77,7 +78,13 @@ public class HotelService {
 	public List<OrderDetailsDTO> getOrderDetails() {
 		
 		org.springframework.security.core.userdetails.UserDetails userDetails = (org.springframework.security.core.userdetails.UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		
+		if(userDetails.getAuthorities().contains(new SimpleGrantedAuthority("Restaurant")))
+			
 		return orderRepository.getOrderDetails(Long.valueOf(userDetails.getUsername()));
+		else
+			return orderRepository.getOrderDetails(-1L);
+			
 
 		
 	}
