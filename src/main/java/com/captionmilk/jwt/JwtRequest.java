@@ -1,4 +1,4 @@
-package com.ontheway.jwt;
+package com.captionmilk.jwt;
 
 import java.io.Serializable;
 

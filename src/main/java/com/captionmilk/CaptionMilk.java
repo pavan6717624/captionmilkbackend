@@ -1,4 +1,4 @@
-package com.ontheway;
+package com.captionmilk;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -9,11 +9,11 @@ import org.springframework.web.bind.annotation.RestController;
 @SpringBootApplication
 @RestController
 @CrossOrigin(origins = "*")
-public class TakeOff {
+public class CaptionMilk {
 	  
 	
 	public static void main(String[] args) {
-		SpringApplication.run(TakeOff.class, args);
+		SpringApplication.run(CaptionMilk.class, args);
 	}
 
 	@RequestMapping("/")

@@ -1,4 +1,4 @@
-package com.ontheway.jwt;
+package com.captionmilk.jwt;
 
 import java.io.IOException;
 
@@ -15,7 +15,7 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import com.ontheway.service.JwtUserDetailsService;
+import com.captionmilk.service.JwtUserDetailsService;
 
 import io.jsonwebtoken.ExpiredJwtException;
 

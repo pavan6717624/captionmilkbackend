@@ -1,4 +1,4 @@
-package com.ontheway.jwt;
+package com.captionmilk.jwt;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -59,7 +59,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		httpSecurity.csrf().disable()
 				// dont authenticate this particular request
 				.authorizeRequests().antMatchers("/login").permitAll()
-				.antMatchers("/getHotels").permitAll()
+				.antMatchers("/success").permitAll()
 				
 				// all other requests need to be authenticated
 				.anyRequest().authenticated().and().

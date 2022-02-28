@@ -1,4 +1,4 @@
-package com.ontheway.service;
+package com.captionmilk.service;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,13 +15,13 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import com.ontheway.repository.UserDetailsRepository;
+import com.captionmilk.repository.LoginDetailsRepository;
 
 @Service
 public class JwtUserDetailsService implements UserDetailsService {
 	
 	@Autowired
-	UserDetailsRepository userDetailsRepository;
+	LoginDetailsRepository loginDetailsRepository;
 
 	@Override
 	@Transactional
@@ -29,7 +29,7 @@ public class JwtUserDetailsService implements UserDetailsService {
 		
 		//System.out.println("entered in  loadUserByUsername..." + username);
 		
-		Optional<com.ontheway.domain.UserDetails> user = userDetailsRepository.findById(Long.valueOf(username));
+		Optional<com.captionmilk.domain.LoginDetails> user = loginDetailsRepository.findById(Long.valueOf(username));
 		
 		List<GrantedAuthority> roles =new ArrayList<GrantedAuthority>();
 		
