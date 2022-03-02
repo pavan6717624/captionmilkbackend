@@ -61,6 +61,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				.authorizeRequests().antMatchers("/login").permitAll()
 				.antMatchers("/sendOTP").permitAll()
 				.antMatchers("/verifyOTP").permitAll()
+				.antMatchers("/sendLoginOTP").permitAll()
+				.antMatchers("/verifyLoginOTP").permitAll()
 				
 				// all other requests need to be authenticated
 				.anyRequest().authenticated().and().

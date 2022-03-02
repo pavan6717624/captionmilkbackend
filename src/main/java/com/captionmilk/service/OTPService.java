@@ -114,7 +114,7 @@ public class OTPService {
 		 return status;
 	}
 
-	
+	@Transactional
 	public StatusDTO verifyOTP(Long mobileNumber, String otp)
 	{
 		StatusDTO status = new StatusDTO();
@@ -148,46 +148,66 @@ public class OTPService {
 		return status;
 
 	}
+	@Transactional
+	public StatusDTO verifyLoginOTP(Long mobileNumber, String otp)
+	{
+		StatusDTO status = new StatusDTO();
+		
+		Optional<OTP> checkOTP=otpRepository.checkOTP(mobileNumber, Timestamp.valueOf(LocalDateTime.now()), otp);
+		
+		if(checkOTP.isPresent())
+		{
+			checkOTP.get().setValidated(true);
+			otpRepository.save(checkOTP.get());
+			status.setStatus(true);
+			status.setMessage("Login Successful.");
+			
+		}
+		else
+		{
+			status.setStatus(false);
+			status.setMessage("Please provide Valid OTP.");
+		}
+		 
+		return status;
+
+	}
 
 	@Transactional
-	public StatusDTO sendLoOTP(Long mobileNumber, String email, String name)
+	public StatusDTO sendLoginOTP(Long mobileNumber)
 	{
 		
+		StatusDTO status = new StatusDTO();
 		
-		StatusDTO status=checkCustomerDetails(mobileNumber,email);
-		
-		if(!status.getStatus())
-			return status;
 		 
-		 OTP otp=new OTP();
+		 LoginDetails login=new LoginDetails();
 		 
-		 Optional<OTP> checkOTP=otpRepository.getOTP(mobileNumber, Timestamp.valueOf(LocalDateTime.now()));
+		 Optional<LoginDetails> checkLogin=loginRepository.findByContact(mobileNumber);
 		 
-		 if(checkOTP.isPresent())
-		 otp=checkOTP.get();
-		 else
-		 {		 
-		 otp.setOtp(generateOTP(4));
-		 otp.setSentOn(Timestamp.valueOf(LocalDateTime.now()));
-		 otp.setValidTill(Timestamp.valueOf(LocalDateTime.now().plusMinutes(15)));
-		 otp.setMobile(mobileNumber);
-		 otp.setValidated(false);
-		 otp.setEmail(email);
-		 otp.setName(name);
-		 otpRepository.save(otp);
-		 
-		 utilService.sendMessage(email, "Caption Milk - Your OTP is "+otp.getOtp(), "Caption Milk -  Your OTP is "+otp.getOtp());
-		 }
-		 System.out.println(otp);
-		 if(otp.getId()!=null)
-			 {
+		 if(checkLogin.isPresent())
+		 {
+			 login=checkLogin.get();
+			 
+			 OTP otp=new OTP();
+			 otp.setOtp(generateOTP(4));
+			 otp.setSentOn(Timestamp.valueOf(LocalDateTime.now()));
+			 otp.setValidTill(Timestamp.valueOf(LocalDateTime.now().plusMinutes(15)));
+			 otp.setMobile(mobileNumber);
+			 otp.setValidated(false);
+			 otp.setEmail(login.getEmail());
+			 otp.setName(login.getName());
+			 otpRepository.save(otp);
+			 
+			 utilService.sendMessage(login.getEmail(), "Caption Milk - Your OTP is "+otp.getOtp(), "Caption Milk -  Your OTP is "+otp.getOtp());
+			 
+			 
 			 status.setStatus(true);
 			 status.setMessage("Success");
 			 }
 		 else
 		 {
 			 status.setStatus(false);
-			 status.setMessage("Please provide Valid Details.");
+			 status.setMessage("Provided Mobile Number is not Registered.\nPlease Register First and then Login.");
 		 }
 		 return status;
 	}

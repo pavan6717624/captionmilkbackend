@@ -62,6 +62,20 @@ public class Controller {
 			return new StatusDTO(false,"Please provide Valid OTP.");
 		}
 	}
+	
+	@RequestMapping(value = "verifyLoginOTP")
+	public StatusDTO verifyLoginOTP(@RequestParam("mobile") String mobile,@RequestParam("otp") String otp)
+	{
+		try
+		{
+		return otpService.verifyLoginOTP(Long.valueOf(mobile), otp);
+		}
+		catch(Exception ex)
+		{
+			System.out.println(ex);
+			return new StatusDTO(false,"Please provide Valid OTP.");
+		}
+	}
  
 
 }
