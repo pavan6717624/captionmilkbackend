@@ -31,7 +31,7 @@ public class LoginDetails implements Serializable {
 	Long userId;
 	String password="";
 	String name="";
-	String contact="";
+	Long contact=0l;
 	String email="";
 	String city="";
 	String message="";
