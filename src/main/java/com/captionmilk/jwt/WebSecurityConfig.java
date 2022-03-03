@@ -58,7 +58,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		httpSecurity.cors();
 		httpSecurity.csrf().disable()
 				// dont authenticate this particular request
-				.authorizeRequests().antMatchers("/login").permitAll()
+				.authorizeRequests()
 				.antMatchers("/sendOTP").permitAll()
 				.antMatchers("/verifyOTP").permitAll()
 				.antMatchers("/sendLoginOTP").permitAll()

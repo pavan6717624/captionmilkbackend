@@ -27,16 +27,18 @@ public class JwtUserDetailsService implements UserDetailsService {
 	@Transactional
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		
-		//System.out.println("entered in  loadUserByUsername..." + username);
+		System.out.println("entered in  loadUserByUsername..." + username);
 		
-		Optional<com.captionmilk.domain.LoginDetails> user = loginDetailsRepository.findById(Long.valueOf(username));
+		Optional<com.captionmilk.domain.LoginDetails> user = loginDetailsRepository.findByContact(Long.valueOf(username));
+		
+		System.out.println(user);
 		
 		List<GrantedAuthority> roles =new ArrayList<GrantedAuthority>();
 		
 		if (user.isPresent()) {
 			System.out.println("User is " +user.get().toString()+" "+user.get().getRole().getRoleName());
 			roles.add(new SimpleGrantedAuthority(user.get().getRole().getRoleName()));
-			return new User(user.get().getUserId()+"", user.get().getPassword(),roles);
+			return new User(user.get().getContact()+"", user.get().getContact()+"",roles);
 		} else {
 			throw new UsernameNotFoundException("User not found with username: " + username);
 		}
