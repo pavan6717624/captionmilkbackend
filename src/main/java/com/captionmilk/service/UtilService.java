@@ -22,8 +22,7 @@ public class UtilService {
 	    private JavaMailSender javaMailSender;
 	  
 	  private final static String ACCOUNT_SID = "ACf482a1d636d1f7a1948262ea473b868c";
-	   private final static String AUTH_ID =  System.getenv("TwilioKey");
-	   
+	   private final static String AUTH_ID =  System.getenv("TwilioKey");	   
 	   
 	   static {
 		      Twilio.init(ACCOUNT_SID, AUTH_ID);

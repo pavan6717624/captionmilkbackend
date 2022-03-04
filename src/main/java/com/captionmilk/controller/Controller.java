@@ -1,6 +1,8 @@
 package com.captionmilk.controller;
 
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -16,9 +18,11 @@ import org.springframework.web.bind.annotation.RestController;
 import com.captionmilk.jwt.JwtTokenUtil;
 import com.captionmilk.model.LoginStatusDTO;
 import com.captionmilk.model.StatusDTO;
+import com.captionmilk.model.UsersDTO;
 import com.captionmilk.repository.LoginDetailsRepository;
 import com.captionmilk.service.JwtUserDetailsService;
 import com.captionmilk.service.OTPService;
+import com.captionmilk.service.UserService;
 
 
 
@@ -42,6 +46,26 @@ public class Controller {
 	@Autowired
 	LoginDetailsRepository loginDetailsRepository;
 	
+	@Autowired
+	UserService userService;
+	
+	@RequestMapping(value = "addUser")
+	public StatusDTO addUser(@RequestParam("name") String name,@RequestParam("address") String address,@RequestParam("mobile") String mobile,@RequestParam("type") String type,@RequestParam("amount") String amount )
+	{
+		StatusDTO status = userService.addUser(name,address,mobile,type,amount);
+		
+		return status;
+	}
+	
+	
+	@RequestMapping(value = "getUsersList")
+	public List<UsersDTO> getUsersList(@RequestParam("type") String type)
+	{
+		List<UsersDTO> users=userService.getUsersList(type);
+		System.out.println(users);
+		return users;
+	}
+	
 	
 	@RequestMapping(value = "sendOTP")
 	public StatusDTO sendOTP(@RequestParam("mobile") String mobile,@RequestParam("email") String email,@RequestParam("name") String name)
@@ -56,6 +80,7 @@ public class Controller {
 			return new StatusDTO(false,"Please provide Valid Details.");
 		}
 	}
+	
 	
 	
 	@RequestMapping(value = "sendLoginOTP")
