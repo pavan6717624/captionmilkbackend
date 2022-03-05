@@ -19,9 +19,7 @@ public class Brand implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	Long id;
-	
-	String name;
-	String description;
+
 	
 	public Brand()
 	{
@@ -31,6 +29,11 @@ public class Brand implements Serializable {
 		
 		this.name = name;
 		this.description = description;
+		this.status=true;
 	}
-
+	String name;
+	String description;
+	
+	Boolean status;
+	
 }

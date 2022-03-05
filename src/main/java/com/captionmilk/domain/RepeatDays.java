@@ -11,29 +11,29 @@ import lombok.Data;
 
 @Data
 @Entity
-public class Quantity implements Serializable {
+public class RepeatDays implements Serializable {
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 7312237954795290758L;
+	private static final long serialVersionUID = 3885707247502994258L;
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	Long id;
-
+	String name;
+	String description;
+	Long repeatDays;
+	Boolean status=false;
 	
-	public Quantity()
+	public RepeatDays()
 	{
 		
 	}
-	public Quantity(String name, String description) {
+	public RepeatDays(String name, String description, Long repeatDays) {
 		
 		this.name = name;
 		this.description = description;
+		this.repeatDays=repeatDays;
 		this.status=true;
 	}
-	String name;
-	String description;
-	
-	Boolean status;
 	
 }

@@ -1,6 +1,7 @@
 package com.captionmilk.controller;
 
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,9 +20,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.captionmilk.domain.Brand;
 import com.captionmilk.domain.Category;
+import com.captionmilk.domain.Quantity;
+import com.captionmilk.domain.RepeatDays;
 import com.captionmilk.jwt.JwtTokenUtil;
 import com.captionmilk.model.CategoryDTO;
 import com.captionmilk.model.LoginStatusDTO;
+import com.captionmilk.model.ProductDTO;
 import com.captionmilk.model.StatusDTO;
 import com.captionmilk.model.UsersDTO;
 import com.captionmilk.repository.BrandRepository;
@@ -31,6 +35,7 @@ import com.captionmilk.repository.QuantityRepository;
 import com.captionmilk.repository.RepeatRepository;
 import com.captionmilk.service.JwtUserDetailsService;
 import com.captionmilk.service.OTPService;
+import com.captionmilk.service.ProductService;
 import com.captionmilk.service.UserService;
 
 
@@ -71,30 +76,53 @@ public class Controller {
 	@Autowired
 	UserService userService;
 	
+	@Autowired
+	ProductService productService;
+	
 	@RequestMapping(value = "addCategory")
 	public StatusDTO addCategory(@RequestBody CategoryDTO cat)
 	{
 		StatusDTO status = new StatusDTO();
 		Optional<Category> category=categoryRepository.findById(cat.getId());
-		if(category.isEmpty())
+		if(!category.isPresent())
 		categoryRepository.save(new Category(cat.getName(),cat.getDescription()));
 		else
 		{
 			category.get().setDescription(cat.getDescription());
 			category.get().setName(cat.getName());
+			if(cat.getName().trim().length() == 0)
+			{
+				category.get().setStatus(false);
+			}
 			categoryRepository.save(category.get());
 		}
 		return status;
 		
 	}
 	
+	@RequestMapping(value = "addProduct")
+	public StatusDTO addProduct(@RequestBody ProductDTO prod)
+	{
+	return productService.addProduct(prod);
+	}
+	
 	
 	@RequestMapping(value = "getCategories")
 	public List<Category> getCategories()
 	{
-		return categoryRepository.findAll();
+		return categoryRepository.findByStatus(true);
 		
 	}
+	
+	@RequestMapping(value = "getRepeats")
+	public List<RepeatDays> getRepeats()
+	{
+		return repeatRepository.findByStatus(true);
+		
+	}
+	
+	
+	
 	
 	
 	@RequestMapping(value = "addBrand")
@@ -102,12 +130,16 @@ public class Controller {
 	{
 		StatusDTO status = new StatusDTO();
 		Optional<Brand> category=brandRepository.findById(cat.getId());
-		if(category.isEmpty())
+		if(!category.isPresent())
 			brandRepository.save(new Brand(cat.getName(),cat.getDescription()));
 		else
 		{
 			category.get().setDescription(cat.getDescription());
 			category.get().setName(cat.getName());
+			if(cat.getName().trim().length() == 0)
+			{
+				category.get().setStatus(false);
+			}
 			brandRepository.save(category.get());
 		}
 		return status;
@@ -118,7 +150,48 @@ public class Controller {
 	@RequestMapping(value = "getBrands")
 	public List<Brand> getBrands()
 	{
-		return brandRepository.findAll();
+		return brandRepository.findByStatus(true);
+		
+	}
+	
+	
+	@RequestMapping(value = "addQuantity")
+	public StatusDTO addQuantity(@RequestBody CategoryDTO cat)
+	{
+		StatusDTO status = new StatusDTO();
+		Optional<Quantity> category=quantityRepository.findById(cat.getId());
+		if(!category.isPresent())
+			quantityRepository.save(new Quantity(cat.getName(),cat.getDescription()));
+		else
+		{
+			category.get().setDescription(cat.getDescription());
+			category.get().setName(cat.getName());
+			if(cat.getName().trim().length() == 0)
+			{
+				category.get().setStatus(false);
+			}
+			quantityRepository.save(category.get());
+		}
+		return status;
+		
+	}
+	
+	
+	@RequestMapping(value = "getQuantities")
+	public List<Quantity> getQuantities()
+	{
+		return quantityRepository.findByStatus(true);
+		
+	}
+	
+	@RequestMapping(value = "getDates")
+	public List<String> getDates()
+	{
+		LocalDate date1=LocalDate.now();
+		LocalDate date2=LocalDate.now().plusDays(100);
+		LocalDate date3=LocalDate.now().plusDays(10);
+		LocalDate date4=LocalDate.now().plusDays(90);
+		return quantityRepository.getDates(date1,date2,date3,date4);
 		
 	}
 	

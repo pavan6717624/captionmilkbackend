@@ -30,9 +30,12 @@ public class Category implements Serializable {
 		
 		this.name = name;
 		this.description = description;
+		this.status=true;
 	}
 	String name;
 	String description;
+	
+	Boolean status;
 	
 	
 

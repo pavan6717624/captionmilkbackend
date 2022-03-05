@@ -63,6 +63,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				.antMatchers("/verifyOTP").permitAll()
 				.antMatchers("/sendLoginOTP").permitAll()
 				.antMatchers("/verifyLoginOTP").permitAll()
+				.antMatchers("/getDates").permitAll()
 				
 				// all other requests need to be authenticated
 				.anyRequest().authenticated().and().

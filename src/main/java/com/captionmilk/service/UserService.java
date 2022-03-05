@@ -33,7 +33,7 @@ public class UserService {
 		
 		System.out.println(optUser);
 		
-		if(optUser.isEmpty())
+		if(!optUser.isPresent())
 		{
 		
 		Users user=new Users( name,  Long.valueOf(mobile),  address, Long.valueOf(amount),type);
