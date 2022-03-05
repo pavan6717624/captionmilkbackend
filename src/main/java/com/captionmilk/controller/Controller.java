@@ -2,6 +2,7 @@ package com.captionmilk.controller;
 
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -11,15 +12,23 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.captionmilk.domain.Brand;
+import com.captionmilk.domain.Category;
 import com.captionmilk.jwt.JwtTokenUtil;
+import com.captionmilk.model.CategoryDTO;
 import com.captionmilk.model.LoginStatusDTO;
 import com.captionmilk.model.StatusDTO;
 import com.captionmilk.model.UsersDTO;
+import com.captionmilk.repository.BrandRepository;
+import com.captionmilk.repository.CategoryRepository;
 import com.captionmilk.repository.LoginDetailsRepository;
+import com.captionmilk.repository.QuantityRepository;
+import com.captionmilk.repository.RepeatRepository;
 import com.captionmilk.service.JwtUserDetailsService;
 import com.captionmilk.service.OTPService;
 import com.captionmilk.service.UserService;
@@ -47,7 +56,72 @@ public class Controller {
 	LoginDetailsRepository loginDetailsRepository;
 	
 	@Autowired
+	CategoryRepository categoryRepository;
+	
+	@Autowired
+	BrandRepository brandRepository;
+	
+	@Autowired
+	QuantityRepository quantityRepository;
+	
+	@Autowired
+	RepeatRepository repeatRepository;
+	
+	
+	@Autowired
 	UserService userService;
+	
+	@RequestMapping(value = "addCategory")
+	public StatusDTO addCategory(@RequestBody CategoryDTO cat)
+	{
+		StatusDTO status = new StatusDTO();
+		Optional<Category> category=categoryRepository.findById(cat.getId());
+		if(category.isEmpty())
+		categoryRepository.save(new Category(cat.getName(),cat.getDescription()));
+		else
+		{
+			category.get().setDescription(cat.getDescription());
+			category.get().setName(cat.getName());
+			categoryRepository.save(category.get());
+		}
+		return status;
+		
+	}
+	
+	
+	@RequestMapping(value = "getCategories")
+	public List<Category> getCategories()
+	{
+		return categoryRepository.findAll();
+		
+	}
+	
+	
+	@RequestMapping(value = "addBrand")
+	public StatusDTO addBrand(@RequestBody CategoryDTO cat)
+	{
+		StatusDTO status = new StatusDTO();
+		Optional<Brand> category=brandRepository.findById(cat.getId());
+		if(category.isEmpty())
+			brandRepository.save(new Brand(cat.getName(),cat.getDescription()));
+		else
+		{
+			category.get().setDescription(cat.getDescription());
+			category.get().setName(cat.getName());
+			brandRepository.save(category.get());
+		}
+		return status;
+		
+	}
+	
+	
+	@RequestMapping(value = "getBrands")
+	public List<Brand> getBrands()
+	{
+		return brandRepository.findAll();
+		
+	}
+	
 	
 	@RequestMapping(value = "addUser")
 	public StatusDTO addUser(@RequestParam("name") String name,@RequestParam("address") String address,@RequestParam("mobile") String mobile,@RequestParam("type") String type,@RequestParam("amount") String amount )
@@ -65,6 +139,7 @@ public class Controller {
 		System.out.println(users);
 		return users;
 	}
+	
 	
 	
 	@RequestMapping(value = "sendOTP")
