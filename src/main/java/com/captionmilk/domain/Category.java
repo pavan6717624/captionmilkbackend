@@ -3,9 +3,12 @@ package com.captionmilk.domain;
 import java.io.Serializable;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 
 import lombok.Data;
 
@@ -21,16 +24,21 @@ public class Category implements Serializable {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	Long id;
 	
+	@OneToOne(fetch = FetchType.LAZY)
+	 @JoinColumn(name = "user")
+	LoginDetails user;
+	
 	
 	public Category()
 	{
 		
 	}
-	public Category(String name, String description) {
+	public Category(String name, String description,LoginDetails user) {
 		
 		this.name = name;
 		this.description = description;
 		this.status=true;
+		this.user=user;
 	}
 	String name;
 	String description;

@@ -9,8 +9,11 @@ import java.security.SecureRandom;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
+import com.captionmilk.model.LoggedUser;
 import com.twilio.Twilio;
 import com.twilio.rest.api.v2010.account.Message;
 import com.twilio.type.PhoneNumber;
@@ -28,7 +31,15 @@ public class UtilService {
 		      Twilio.init(ACCOUNT_SID, AUTH_ID);
 		   }
 		   
-	
+	   public static LoggedUser getUser()
+	   {
+		   LoggedUser user=new LoggedUser();
+	   org.springframework.security.core.userdetails.UserDetails userDetails = (org.springframework.security.core.userdetails.UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+	 //  user.setRoles(userDetails.getAuthorities().toArray());
+	   user.setLoginId(Long.valueOf(userDetails.getUsername()));
+	   return user;
+	   
+	   }
 	public String generatePassword(int length) throws NoSuchAlgorithmException {
 	      String capitalCaseLetters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 	      String lowerCaseLetters = "abcdefghijklmnopqrstuvwxyz";

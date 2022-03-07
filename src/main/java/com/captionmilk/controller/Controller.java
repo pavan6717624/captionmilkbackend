@@ -5,6 +5,8 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -26,6 +28,7 @@ import com.captionmilk.jwt.JwtTokenUtil;
 import com.captionmilk.model.CategoryDTO;
 import com.captionmilk.model.LoginStatusDTO;
 import com.captionmilk.model.ProductDTO;
+import com.captionmilk.model.ProductDTO1;
 import com.captionmilk.model.StatusDTO;
 import com.captionmilk.model.UsersDTO;
 import com.captionmilk.repository.BrandRepository;
@@ -37,6 +40,7 @@ import com.captionmilk.service.JwtUserDetailsService;
 import com.captionmilk.service.OTPService;
 import com.captionmilk.service.ProductService;
 import com.captionmilk.service.UserService;
+import com.captionmilk.service.UtilService;
 
 
 
@@ -79,13 +83,16 @@ public class Controller {
 	@Autowired
 	ProductService productService;
 	
+	@Autowired
+	UtilService utilService;
+	
 	@RequestMapping(value = "addCategory")
 	public StatusDTO addCategory(@RequestBody CategoryDTO cat)
 	{
 		StatusDTO status = new StatusDTO();
 		Optional<Category> category=categoryRepository.findById(cat.getId());
 		if(!category.isPresent())
-		categoryRepository.save(new Category(cat.getName(),cat.getDescription()));
+		categoryRepository.save(new Category(cat.getName(),cat.getDescription(),loginDetailsRepository.findByContact(UtilService.getUser().getLoginId()).get()));
 		else
 		{
 			category.get().setDescription(cat.getDescription());
@@ -106,8 +113,33 @@ public class Controller {
 	return productService.addProduct(prod);
 	}
 	
+	@RequestMapping(value = "getProducts")
+	public List<ProductDTO1> getProducts(@RequestParam("selectedDate") String selectedDate)
+	{
+		return productService.getProducts(selectedDate);
+		
+	}
+	
+	@RequestMapping(value = "getProductReport")
+	public List<ProductDTO1> getProductReport(@RequestParam("fromDate") String fromDate, @RequestParam("toDate") String toDate)
+	{
+		return productService.getProductReport(fromDate,toDate);
+		
+	}
+	
+	@RequestMapping(value = "statusChange")
+	public StatusDTO statusChange(@RequestParam("pid") String pid,@RequestParam("id") String id)
+	{
+		return productService.statusChange(pid,id);
+		
+	}
+	
+	
+	
 	
 	@RequestMapping(value = "getCategories")
+	
+	@Transactional
 	public List<Category> getCategories()
 	{
 		return categoryRepository.findByStatus(true);
@@ -153,6 +185,8 @@ public class Controller {
 		return brandRepository.findByStatus(true);
 		
 	}
+	
+	
 	
 	
 	@RequestMapping(value = "addQuantity")

@@ -2,7 +2,6 @@ package com.captionmilk.domain;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
-import java.time.LocalDate;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -42,7 +41,11 @@ public class Products implements Serializable {
 		
 	Long amount;	
 	
-	Long daySchedule;
+	Boolean morning;
+	
+	Boolean evening;
+	
+	Boolean afternoon;
 	
 	@Column(columnDefinition="datetime")
 	 Timestamp  fromDate;
@@ -50,8 +53,14 @@ public class Products implements Serializable {
 	@Column(columnDefinition="datetime")
 	 Timestamp  toDate;
 	
+	Boolean outOfHome;
+	
 	Boolean serviceAvailed;
 	
-	Boolean outOfHome;
+	@OneToOne(fetch = FetchType.LAZY)
+	 @JoinColumn(name = "user")
+	LoginDetails user;
+	
+
 	
 }

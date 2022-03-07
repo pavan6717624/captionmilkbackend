@@ -1,7 +1,5 @@
 package com.captionmilk.model;
 
-import java.time.LocalDate;
-
 import lombok.Data;
 
 @Data
@@ -23,14 +21,18 @@ public class ProductDTO  {
 
 	Long amount;
 		
-	Long daySchedule;
+	Boolean morning;
+	
+	Boolean afternoon;
+	Boolean evening;
 	
 	String fromDate;
 	
 	String toDate;
 	
-	Boolean serviceAvailed;
-	
 	Boolean outOfHome;
+	
+	Boolean serviceAvailed;
+
 	
 }
