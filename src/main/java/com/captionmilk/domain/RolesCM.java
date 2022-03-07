@@ -10,7 +10,7 @@ import javax.persistence.Id;
 import lombok.Data;
 @Data
 @Entity
-public class Roles implements Serializable
+public class RolesCM implements Serializable
 {
 
 	/**

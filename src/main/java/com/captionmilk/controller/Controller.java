@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.captionmilk.domain.Brand;
-import com.captionmilk.domain.Category;
+import com.captionmilk.domain.CategoryCM;
 import com.captionmilk.domain.Quantity;
 import com.captionmilk.domain.RepeatDays;
 import com.captionmilk.jwt.JwtTokenUtil;
@@ -75,7 +75,7 @@ public class Controller {
 	@RequestMapping(value = "getCategories")
 	
 	
-	public List<Category> getCategories()
+	public List<CategoryCM> getCategories()
 	{
 		return productService.getCategories();
 		

@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import com.captionmilk.domain.Brand;
-import com.captionmilk.domain.Category;
+import com.captionmilk.domain.CategoryCM;
 import com.captionmilk.domain.LoginDetails;
 import com.captionmilk.domain.Products;
 import com.captionmilk.domain.Quantity;
@@ -60,9 +60,9 @@ public class ProductService {
 	{
 		LoginDetails user = loginDetailsRepository.findByContact(UtilService.getUser().getLoginId()).get();
 		StatusDTO status = new StatusDTO();
-		Optional<Category> category=categoryRepository.findById(cat.getId());
+		Optional<CategoryCM> category=categoryRepository.findById(cat.getId());
 		if(!category.isPresent())
-		categoryRepository.save(new Category(cat.getName(),cat.getDescription(),user));
+		categoryRepository.save(new CategoryCM(cat.getName(),cat.getDescription(),user));
 		else
 		{
 			category.get().setDescription(cat.getDescription());
@@ -143,7 +143,7 @@ public class ProductService {
 	}
 	
 	@Transactional
-	public List<Category> getCategories()
+	public List<CategoryCM> getCategories()
 	{
 		LoginDetails user = loginDetailsRepository.findByContact(UtilService.getUser().getLoginId()).get();
 		return categoryRepository.findByStatusAndUserOrderByIdDesc(true,user);

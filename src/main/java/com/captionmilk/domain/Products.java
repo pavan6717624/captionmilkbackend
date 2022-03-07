@@ -29,7 +29,7 @@ public class Products implements Serializable {
 	
 	@OneToOne(fetch = FetchType.LAZY)
 	 @JoinColumn(name = "cid")
-	Category category;
+	CategoryCM category;
 	
 	@OneToOne(fetch = FetchType.LAZY)
 	 @JoinColumn(name = "qid")

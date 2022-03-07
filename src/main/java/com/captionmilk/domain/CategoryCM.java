@@ -14,7 +14,7 @@ import lombok.Data;
 
 @Data
 @Entity
-public class Category implements Serializable {
+public class CategoryCM implements Serializable {
 	
 	/**
 	 * 
@@ -29,11 +29,11 @@ public class Category implements Serializable {
 	LoginDetails user;
 	
 	
-	public Category()
+	public CategoryCM()
 	{
 		
 	}
-	public Category(String name, String description,LoginDetails user) {
+	public CategoryCM(String name, String description,LoginDetails user) {
 		
 		this.name = name;
 		this.description = description;

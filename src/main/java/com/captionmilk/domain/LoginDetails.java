@@ -46,7 +46,7 @@ public class LoginDetails implements Serializable {
 
 	@OneToOne(fetch = FetchType.EAGER)
 	 @JoinColumn(name = "roleId")
-	Roles role;
+	RolesCM role;
 	
 	
 	Boolean isDisabled;

@@ -7,7 +7,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.captionmilk.domain.Brand;
-import com.captionmilk.domain.Category;
+import com.captionmilk.domain.CategoryCM;
 import com.captionmilk.domain.LoginDetails;
 
 @Repository
