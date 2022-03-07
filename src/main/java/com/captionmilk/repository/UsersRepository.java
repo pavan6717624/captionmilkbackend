@@ -14,9 +14,11 @@ import com.captionmilk.model.UsersDTO;
 @Repository
 public interface UsersRepository  extends JpaRepository<Users,Long> {
 
-	@Query("select u.name as name,u.contact as contact,u.address as address,u.regularAmount as regularAmount ,u.type as type from Users u where u.type=(:type)")
-	List<UsersDTO> findByType(@Param("type") String type);
+	@Query("select u.name as name,u.contact as contact,u.address as address,u.regularAmount as regularAmount ,u.type as type,u.created as created from Users u where u.type=(:type) and u.userId=(:userId) order by u.createdDate desc")
+	List<UsersDTO> findByTypeAndUserId(@Param("type") String type, @Param("userId") Long userId) ;
 	
-	Optional<Users> findByContactAndType(@Param("contact") Long contact,@Param("type") String type);
+	
+	
+	Optional<Users> findByContactAndTypeAndUserId(@Param("contact") Long contact,@Param("type") String type, @Param("userId") Long userId) ;
 	
 }

@@ -8,6 +8,10 @@ public interface ProductDTO1 {
 	Long getQid();
 	Long getRid();
 	
+	String getName();
+	Long getContact();
+	String getType();
+	
 	String getBrand();
 	
 	String getCategory();

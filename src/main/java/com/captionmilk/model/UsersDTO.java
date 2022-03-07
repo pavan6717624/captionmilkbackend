@@ -9,5 +9,6 @@ public interface UsersDTO {
 	String getAddress();
 	Long getRegularAmount();
 	String getType();
+	String getCreated();
 
 }

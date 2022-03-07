@@ -1,11 +1,7 @@
 package com.captionmilk.controller;
 
 
-import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
-
-import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -31,11 +27,7 @@ import com.captionmilk.model.ProductDTO;
 import com.captionmilk.model.ProductDTO1;
 import com.captionmilk.model.StatusDTO;
 import com.captionmilk.model.UsersDTO;
-import com.captionmilk.repository.BrandRepository;
-import com.captionmilk.repository.CategoryRepository;
 import com.captionmilk.repository.LoginDetailsRepository;
-import com.captionmilk.repository.QuantityRepository;
-import com.captionmilk.repository.RepeatRepository;
 import com.captionmilk.service.JwtUserDetailsService;
 import com.captionmilk.service.OTPService;
 import com.captionmilk.service.ProductService;
@@ -65,19 +57,6 @@ public class Controller {
 	LoginDetailsRepository loginDetailsRepository;
 	
 	@Autowired
-	CategoryRepository categoryRepository;
-	
-	@Autowired
-	BrandRepository brandRepository;
-	
-	@Autowired
-	QuantityRepository quantityRepository;
-	
-	@Autowired
-	RepeatRepository repeatRepository;
-	
-	
-	@Autowired
 	UserService userService;
 	
 	@Autowired
@@ -89,21 +68,16 @@ public class Controller {
 	@RequestMapping(value = "addCategory")
 	public StatusDTO addCategory(@RequestBody CategoryDTO cat)
 	{
-		StatusDTO status = new StatusDTO();
-		Optional<Category> category=categoryRepository.findById(cat.getId());
-		if(!category.isPresent())
-		categoryRepository.save(new Category(cat.getName(),cat.getDescription(),loginDetailsRepository.findByContact(UtilService.getUser().getLoginId()).get()));
-		else
-		{
-			category.get().setDescription(cat.getDescription());
-			category.get().setName(cat.getName());
-			if(cat.getName().trim().length() == 0)
-			{
-				category.get().setStatus(false);
-			}
-			categoryRepository.save(category.get());
-		}
-		return status;
+		return productService.addCategory(cat);
+	}
+	
+	
+	@RequestMapping(value = "getCategories")
+	
+	
+	public List<Category> getCategories()
+	{
+		return productService.getCategories();
 		
 	}
 	
@@ -114,9 +88,9 @@ public class Controller {
 	}
 	
 	@RequestMapping(value = "getProducts")
-	public List<ProductDTO1> getProducts(@RequestParam("selectedDate") String selectedDate)
+	public List<ProductDTO1> getProducts(@RequestParam("selectedDate") String selectedDate, @RequestParam("contact") String contact, @RequestParam("type") String type)
 	{
-		return productService.getProducts(selectedDate);
+		return productService.getProducts(selectedDate,contact, type);
 		
 	}
 	
@@ -137,19 +111,12 @@ public class Controller {
 	
 	
 	
-	@RequestMapping(value = "getCategories")
 	
-	@Transactional
-	public List<Category> getCategories()
-	{
-		return categoryRepository.findByStatus(true);
-		
-	}
 	
 	@RequestMapping(value = "getRepeats")
 	public List<RepeatDays> getRepeats()
 	{
-		return repeatRepository.findByStatus(true);
+		return productService.getRepeats();
 		
 	}
 	
@@ -160,21 +127,7 @@ public class Controller {
 	@RequestMapping(value = "addBrand")
 	public StatusDTO addBrand(@RequestBody CategoryDTO cat)
 	{
-		StatusDTO status = new StatusDTO();
-		Optional<Brand> category=brandRepository.findById(cat.getId());
-		if(!category.isPresent())
-			brandRepository.save(new Brand(cat.getName(),cat.getDescription()));
-		else
-		{
-			category.get().setDescription(cat.getDescription());
-			category.get().setName(cat.getName());
-			if(cat.getName().trim().length() == 0)
-			{
-				category.get().setStatus(false);
-			}
-			brandRepository.save(category.get());
-		}
-		return status;
+		return productService.addBrand(cat);
 		
 	}
 	
@@ -182,7 +135,7 @@ public class Controller {
 	@RequestMapping(value = "getBrands")
 	public List<Brand> getBrands()
 	{
-		return brandRepository.findByStatus(true);
+		return productService.getBrands();
 		
 	}
 	
@@ -192,40 +145,15 @@ public class Controller {
 	@RequestMapping(value = "addQuantity")
 	public StatusDTO addQuantity(@RequestBody CategoryDTO cat)
 	{
-		StatusDTO status = new StatusDTO();
-		Optional<Quantity> category=quantityRepository.findById(cat.getId());
-		if(!category.isPresent())
-			quantityRepository.save(new Quantity(cat.getName(),cat.getDescription()));
-		else
-		{
-			category.get().setDescription(cat.getDescription());
-			category.get().setName(cat.getName());
-			if(cat.getName().trim().length() == 0)
-			{
-				category.get().setStatus(false);
-			}
-			quantityRepository.save(category.get());
-		}
-		return status;
 		
+		return productService.addQuantity(cat);
 	}
 	
 	
 	@RequestMapping(value = "getQuantities")
 	public List<Quantity> getQuantities()
 	{
-		return quantityRepository.findByStatus(true);
-		
-	}
-	
-	@RequestMapping(value = "getDates")
-	public List<String> getDates()
-	{
-		LocalDate date1=LocalDate.now();
-		LocalDate date2=LocalDate.now().plusDays(100);
-		LocalDate date3=LocalDate.now().plusDays(10);
-		LocalDate date4=LocalDate.now().plusDays(90);
-		return quantityRepository.getDates(date1,date2,date3,date4);
+		return productService.getQuantities();
 		
 	}
 	

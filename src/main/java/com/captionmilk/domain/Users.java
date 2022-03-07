@@ -1,7 +1,10 @@
 package com.captionmilk.domain;
 
 import java.io.Serializable;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -25,18 +28,27 @@ public class Users implements Serializable {/**
 	Long regularAmount=0l;
 	String type="";
 	
+	Long userId=0l;
+	Boolean created=true;
+	
+	@Column(columnDefinition="datetime")
+	 Timestamp  createdDate;
+	
 	public Users()
 	{
 		
 	}
 	
-	public Users(String name, Long contact, String address, Long regularAmount,String type) {
+	public Users(String name, Long contact, String address, Long regularAmount,String type, Long userId, Boolean created) {
 		
 		this.name = name;
 		this.contact = contact;
 		this.address = address;
 		this.regularAmount=regularAmount;
 		this.type=type;
+		this.userId=userId;
+		this.created=created;
+		this.createdDate = Timestamp.valueOf(LocalDateTime.now());
 	}
 	
 

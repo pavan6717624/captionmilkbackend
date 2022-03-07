@@ -57,10 +57,13 @@ public class Products implements Serializable {
 	
 	Boolean serviceAvailed;
 	
+	@OneToOne(fetch = FetchType.EAGER)
+	 @JoinColumn(name = "loginUser")
+	LoginDetails loginUser;
+	
 	@OneToOne(fetch = FetchType.LAZY)
 	 @JoinColumn(name = "user")
-	LoginDetails user;
-	
+	Users user;
 
 	
 }

@@ -10,5 +10,5 @@ import com.captionmilk.domain.RepeatDays;
 
 @Repository
 public interface RepeatRepository extends JpaRepository<RepeatDays,Long> {
-	List<RepeatDays> findByStatus(@Param("status") Boolean status);
+	List<RepeatDays> findByStatusOrderByIdDesc(@Param("status") Boolean status);
 }

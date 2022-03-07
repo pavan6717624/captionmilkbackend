@@ -33,6 +33,14 @@ public class ProductDTO  {
 	Boolean outOfHome;
 	
 	Boolean serviceAvailed;
+	
+	Long contact=0l;
+	
+	String type="";
+	
+	Boolean created=false;
+	
+	
 
 	
 }

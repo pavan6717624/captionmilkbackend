@@ -32,11 +32,12 @@ public class Quantity implements Serializable {
 	{
 		
 	}
-	public Quantity(String name, String description) {
+	public Quantity(String name, String description, LoginDetails user) {
 		
 		this.name = name;
 		this.description = description;
 		this.status=true;
+		this.user=user;
 	}
 	String name;
 	String description;

@@ -28,17 +28,18 @@ public class Brand implements Serializable {
 	{
 		
 	}
-	public Brand(String name, String description) {
+	public Brand(String name, String description, LoginDetails user) {
 		
 		this.name = name;
 		this.description = description;
 		this.status=true;
+		this.user=user;
 	}
 	String name;
 	String description;
 	
 	Boolean status;
-	@OneToOne(fetch = FetchType.LAZY)
+	@OneToOne(fetch = FetchType.EAGER)
 	 @JoinColumn(name = "user")
 	LoginDetails user;
 }

@@ -44,7 +44,7 @@ public class LoginDetails implements Serializable {
 
 
 
-	@OneToOne(fetch = FetchType.LAZY)
+	@OneToOne(fetch = FetchType.EAGER)
 	 @JoinColumn(name = "roleId")
 	Roles role;
 	
