@@ -161,6 +161,7 @@ public class OTPService {
 			otpRepository.save(checkOTP.get());
 			status.setStatus(true);
 			status.setMessage("Login Successful.");
+			System.out.println("login success");
 			
 		}
 		else

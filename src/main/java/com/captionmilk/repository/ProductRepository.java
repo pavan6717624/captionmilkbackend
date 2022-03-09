@@ -35,7 +35,7 @@ public interface ProductRepository  extends JpaRepository<Products,Long> {
 			+ " (select name from users u where u.id=p.user) as name, "
 			+ " (select contact from users u where u.id=p.user) as contact, "
 			+ " (select type from users u where u.id=p.user) as type, "
-			+ "(select name from category where id = cid) as category, "
+			+ "(select name from categoryCM where id = cid) as category, "
 			+ "(select name from brand where id = bid)  as brand,"
 			+ "(select name from quantity where id = qid)  as quantity, "
 			+ "(select name from repeat_days where id = rid)  as repeatDays, "

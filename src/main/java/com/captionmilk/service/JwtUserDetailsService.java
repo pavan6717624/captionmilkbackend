@@ -40,6 +40,7 @@ public class JwtUserDetailsService implements UserDetailsService {
 			roles.add(new SimpleGrantedAuthority(user.get().getRole().getRoleName()));
 			return new User(user.get().getContact()+"", user.get().getContact()+"",roles);
 		} else {
+			System.out.println("Users not found");
 			throw new UsernameNotFoundException("User not found with username: " + username);
 		}
 		
