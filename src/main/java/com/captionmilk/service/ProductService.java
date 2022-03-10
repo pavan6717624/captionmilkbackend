@@ -138,7 +138,7 @@ public class ProductService {
 	public List<RepeatDays> getRepeats()
 	{
 		
-		return repeatRepository.findByStatusOrderByIdDesc(true);
+		return repeatRepository.findByStatusOrderByIdAsc(true);
 		
 	}
 	
