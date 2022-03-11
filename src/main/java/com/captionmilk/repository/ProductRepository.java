@@ -2,6 +2,7 @@ package com.captionmilk.repository;
 
 import java.sql.Timestamp;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -56,5 +57,8 @@ public interface ProductRepository  extends JpaRepository<Products,Long> {
 			+ " and  (DATEDIFF(c.day , p.from_date)) % (select repeat_days from repeat_days where id=rid) = 0 "
 			+ " order by c.day, p.from_date asc", nativeQuery=true)
 	List<ProductDTO1> getProductReport(@Param("fromDate") Timestamp fromDate, @Param("toDate") Timestamp toDate,@Param("loginUser") LoginDetails loginUser);
-}
+	
+	
+	Optional<Products> findByLoginUserAndUser(@Param("loginUser") LoginDetails loginUser, @Param("user") Users user);
+} 
 	

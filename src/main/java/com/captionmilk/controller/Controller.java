@@ -102,9 +102,9 @@ public class Controller {
 	}
 	
 	@RequestMapping(value = "statusChange")
-	public StatusDTO statusChange(@RequestParam("pid") String pid,@RequestParam("id") String id)
+	public StatusDTO statusChange(@RequestParam("selectedDate") String selectedDate, @RequestParam("contact") String contact, @RequestParam("type") String type)
 	{
-		return productService.statusChange(pid,id);
+		return productService.statusChange(selectedDate,contact, type);
 		
 	}
 	

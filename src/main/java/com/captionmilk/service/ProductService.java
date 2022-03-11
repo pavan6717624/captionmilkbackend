@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import com.captionmilk.domain.Brand;
 import com.captionmilk.domain.CategoryCM;
 import com.captionmilk.domain.LoginDetails;
+import com.captionmilk.domain.OutOfHome;
 import com.captionmilk.domain.Products;
 import com.captionmilk.domain.Quantity;
 import com.captionmilk.domain.RepeatDays;
@@ -26,6 +27,7 @@ import com.captionmilk.model.StatusDTO;
 import com.captionmilk.repository.BrandRepository;
 import com.captionmilk.repository.CategoryRepository;
 import com.captionmilk.repository.LoginDetailsRepository;
+import com.captionmilk.repository.OutOfHomeRepository;
 import com.captionmilk.repository.ProductRepository;
 import com.captionmilk.repository.QuantityRepository;
 import com.captionmilk.repository.RepeatRepository;
@@ -54,6 +56,9 @@ public class ProductService {
 	
 	@Autowired
 	LoginDetailsRepository loginDetailsRepository;
+	
+	@Autowired
+	OutOfHomeRepository outOfHomeRepository;
 	
 	@Transactional
 	public StatusDTO addCategory(CategoryDTO cat)
@@ -242,18 +247,40 @@ public class ProductService {
 		
 	}
 
-	public StatusDTO statusChange(String pid, String id) {
+	@Transactional
+	public StatusDTO statusChange(String date, String contact, String type) {
+		
+		
+		DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+		
+		Timestamp providedDate = Timestamp.valueOf(LocalDateTime.parse(date+" 00:00",dateFormatter));
+		
+		
+		LoginDetails loginUser = loginDetailsRepository.findByContact(UtilService.getUser().getLoginId()).get();
+		Users user = userRepository.findByContactAndTypeAndUserId(Long.valueOf(contact),type,loginUser.getContact()).get();
+		
 		StatusDTO status = new StatusDTO();
-		Optional<Products> product=productRepository.findById(Long.valueOf(pid));
+		Optional<OutOfHome> outOfHome=outOfHomeRepository.findByLoginUserAndUserAndOnDate(loginUser,user,providedDate);
 		
-		if(!product.isPresent())
-		return status;
-		if(id.equals("0"))
-			product.get().setServiceAvailed(!product.get().getServiceAvailed());
-		else if(id.equals("1"))
-			product.get().setOutOfHome(!product.get().getOutOfHome());
+		if(!outOfHome.isPresent())
+		{
+			OutOfHome home=new OutOfHome();
+			home.setLoginUser(loginUser);
+			home.setOnDate(providedDate);
+			home.setOutOfHome(true);
+			home.setUser(user);
+			outOfHomeRepository.save(home);
+			
+		}
+		else
+		{
+	
+		outOfHome.get().setOutOfHome(!outOfHome.get().getOutOfHome());
 		
-		productRepository.save(product.get());
+		outOfHomeRepository.save(outOfHome.get());
+		}
+		
+		
 		
 		return status;
 	}
