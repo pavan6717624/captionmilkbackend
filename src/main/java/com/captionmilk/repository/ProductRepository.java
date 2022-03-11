@@ -23,11 +23,12 @@ public interface ProductRepository  extends JpaRepository<Products,Long> {
 			+ "p.repeat.id as rid, p.repeat.name as repeatDays, "
 			+ "p.amount as amount, p.morning as morning, p.afternoon as afternoon, p.evening as evening,"
 			+ "p.fromDate as fromDate, p.toDate as toDate,p.serviceAvailed as serviceAvailed, p.outOfHome as outOfHome,"
-			+ "(select sum(p1.amount) as todayAmount from Products p1 where  p1.fromDate <= (:date)) as todayAmount,"
-			+ "(select sum(p1.amount*((DATEDIFF((:date),(p1.fromDate)))+1)) as netAmount from Products p1 where  p1.fromDate <= (:date)) as netAmount,"
-			+ "(select sum(p1.amount*((DATEDIFF((:date),case when :monthStart > p1.fromDate then (:monthStart) else p1.fromDate end))+1)) as monthAmount from Products p1 where  p1.fromDate <= (:date))  as monthAmount "
+			+ "(select sum(p1.amount) as todayAmount from Products p1 where  p1.fromDate <= (:date) and floor(((DATEDIFF((:date),(p1.fromDate)))) % p1.repeat.repeatDays) = 0 and ((p1.loginUser.contact=:#{#loginUser.contact} and p1.user.contact=:#{#user.contact}) or (p1.loginUser.contact=:#{#user.contact} and p1.user.contact=:#{#loginUser.contact}))) as todayAmount,"
+			+ "(select sum(p1.amount*(floor(((DATEDIFF((:date),(p1.fromDate))+p1.repeat.repeatDays)) / p1.repeat.repeatDays))) as netAmount from Products p1 where  p1.fromDate <= (:date)  and ((p1.loginUser.contact=:#{#loginUser.contact} and p1.user.contact=:#{#user.contact}) or (p1.loginUser.contact=:#{#user.contact} and p1.user.contact=:#{#loginUser.contact}))) as netAmount,"
+		//	+ "(select sum(p1.amount*((DATEDIFF((:date),case when :monthStart > p1.fromDate then (:monthStart) else p1.fromDate end))+1)) as monthAmount from Products p1 where  p1.fromDate <= (:date) and floor(((DATEDIFF((:date),(p1.fromDate)))+1) / p1.repeat.repeatDays) = 0 and ((p1.loginUser.contact=:#{#loginUser.contact} and p1.user.contact=:#{#user.contact}) or (p1.loginUser.contact=:#{#user.contact} and p1.user.contact=:#{#loginUser.contact})))  as monthAmount "
+			+ "(select sum(p1.amount*(floor(((DATEDIFF((:date),(case when :monthStart > p1.fromDate then (:monthStart) else p1.fromDate end))+p1.repeat.repeatDays)) / p1.repeat.repeatDays))) as monthAmount from Products p1 where  p1.fromDate <= (:date)  and ((p1.loginUser.contact=:#{#loginUser.contact} and p1.user.contact=:#{#user.contact}) or (p1.loginUser.contact=:#{#user.contact} and p1.user.contact=:#{#loginUser.contact})))  as monthAmount "
 			
-			+ "  from Products p where p.fromDate <= (:date) and ((p.loginUser.contact=:#{#loginUser.contact} and p.user.contact=:#{#user.contact}) or (p.loginUser.contact=:#{#user.contact} and p.user.contact=:#{#loginUser.contact}))")
+			+ "  from Products p where p.fromDate <= (:date) and floor(((DATEDIFF((:date),(p.fromDate)))) % p.repeat.repeatDays) = 0 and ((p.loginUser.contact=:#{#loginUser.contact} and p.user.contact=:#{#user.contact}) or (p.loginUser.contact=:#{#user.contact} and p.user.contact=:#{#loginUser.contact}))")
 	List<ProductDTO1> getProducts(@Param("date") Timestamp date,@Param("monthStart") Timestamp monthStart,@Param("loginUser") LoginDetails loginUser, @Param("user") Users user);
 	
 	
@@ -35,7 +36,7 @@ public interface ProductRepository  extends JpaRepository<Products,Long> {
 			+ " (select name from users u where u.id=p.user) as name, "
 			+ " (select contact from users u where u.id=p.user) as contact, "
 			+ " (select type from users u where u.id=p.user) as type, "
-			+ "(select name from categoryCM where id = cid) as category, "
+			+ "(select name from categorycm where id = cid) as category, "
 			+ "(select name from brand where id = bid)  as brand,"
 			+ "(select name from quantity where id = qid)  as quantity, "
 			+ "(select name from repeat_days where id = rid)  as repeatDays, "
